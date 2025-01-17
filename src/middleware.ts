@@ -14,7 +14,7 @@ export async function middleware(req: NextRequest) {
     return NextResponse.next();
   }
 
-  const isLoggedIn = !!(await cookies()).get("authjs.session-token"); //generally authorization is performed in authorized callback in auth.ts and here only the above commented part is executed but thats not working so i have to do it here.
+  const isLoggedIn = !!(await cookies()).get("__Secure-authjs.session-token"); //generally authorization is performed in authorized callback in auth.ts and here only the above commented part is executed but that is not working so i have to do it here.
 
   const isOnDashboard = nextUrl.pathname.startsWith("/dashboard");
 

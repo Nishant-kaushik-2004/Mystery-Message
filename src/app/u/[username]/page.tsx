@@ -16,6 +16,10 @@ function PublicProfilePage() {
   const defaultMsg2 =
     "If you could have dinner with any historical figure, who would it be and why?";
   const defaultMsg3 = "What's a simple thing that makes you happy?";
+
+  const [msg1, setMsg1] = useState<string>(defaultMsg1);
+  const [msg2, setMsg2] = useState<string>(defaultMsg2);
+  const [msg3, setMsg3] = useState<string>(defaultMsg3);
   const prompt =
     "Create a list of three open-ended and engaging questions formatted as a single string. Each question should be separated by '||'. These questions are for an anonymous social messaging platform, like Qooh.me, and should be suitable for a diverse audience. Avoid personal or sensitive topics, focusing instead on universal themes that encourage friendly interaction. For example, your output should be structured like this:'What's a hobby you've recently started?| |If you could have dinner with any historical figure, who would it be?|l What's a simple thing that makes you happy?'. Ensure the questions are intriguing, foster curiosity, and contribute to a positive and welcoming conversational environment.";
 
@@ -68,18 +72,26 @@ function PublicProfilePage() {
         completion?.split("||")[2]?.slice(0, -1) || ""
       );
     }
+    const message1 = localStorage.getItem("msg1") || null;
+    if (message1) setMsg1(message1);
+
+    const message2 = localStorage.getItem("msg2") || null;
+    if (message2) setMsg2(message2);
+
+    const message3 = localStorage.getItem("msg3") || null;
+    if (message3) setMsg3(message3);
   }, [complete, isLoading, completion]);
 
   return (
-    <div className="bg-white min-h-screen py-6">
+    <div className="bg-white min-h-screen p-6 ">
       <div className="mx-auto max-w-5xl">
-        <h1 className="text-4xl font-bold text-center mb-12">
+        <h1 className="text-3xl sm:text-4xl font-bold text-center mb-12">
           Public Profile Link
         </h1>
         <div className="flex flex-col gap-4">
           <p className="text-lg font-semibold -mb-2">
             Send Anonymous Message to{" "}
-            <span className="text-blue-500">@{username}</span>
+            <span className="text-blue-500">@{username} 👋</span>
           </p>
           <form action={handleMessageSending} className="flex flex-col gap-2">
             <Textarea
@@ -90,7 +102,7 @@ function PublicProfilePage() {
               onChange={(e) => setMessage(e.target.value)}
             />
             <Button
-              className="self-center text-lg max-w-min py-6"
+              className="self-center text-lg max-w-min py-5 sm:py-6"
               type="submit"
             >
               {isSendingMsg ? <Loader2 className="animate-spin" /> : "Send It"}
@@ -98,9 +110,9 @@ function PublicProfilePage() {
           </form>
         </div>
         <Separator className="my-5" />
-        <div className="flex flex-col justify-evenly mt-12 gap-10">
+        <div className="flex flex-col justify-evenly mt-8 sm:mt-12 gap-10">
           <Button
-            className="text-lg max-w-48 py-6"
+            className="text-lg max-w-48 py-5 sm:py-6"
             onClick={() => {
               complete(prompt);
             }}
@@ -121,33 +133,21 @@ function PublicProfilePage() {
             )}
             <div
               className="w-full border rounded-lg p-3 text-center text-lg hover:cursor-pointer"
-              onClick={() =>
-                setMessage(localStorage.getItem("msg1") || defaultMsg1)
-              }
+              onClick={() => setMessage(msg1)}
             >
-              {isLoading
-                ? completion?.split("||")[0]?.slice(1)
-                : localStorage.getItem("msg1") || defaultMsg1}
+              {isLoading ? completion?.split("||")[0]?.slice(1) : msg1}
             </div>
             <div
               className="w-full border rounded-lg p-3 text-center text-lg hover:cursor-pointer"
-              onClick={() =>
-                setMessage(localStorage.getItem("msg2") || defaultMsg2)
-              }
+              onClick={() => setMessage(msg2)}
             >
-              {isLoading
-                ? completion?.split("||")[1]
-                : localStorage.getItem("msg2") || defaultMsg2}
+              {isLoading ? completion?.split("||")[1] : msg2}
             </div>
             <div
               className="w-full border rounded-lg p-3 text-center text-lg hover:cursor-pointer"
-              onClick={() =>
-                setMessage(localStorage.getItem("msg3") || defaultMsg3)
-              }
+              onClick={() => setMessage(msg3)}
             >
-              {isLoading
-                ? completion?.split("||")[2]?.slice(0, -1)
-                : localStorage.getItem("msg3") || defaultMsg3}
+              {isLoading ? completion?.split("||")[2]?.slice(0, -1) : msg3}
             </div>
           </div>
         </div>

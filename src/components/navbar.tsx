@@ -91,7 +91,7 @@ export default function Navbar() {
   }, [currentPagePathname]);
 
   return (
-    <nav className="p-5 md:p-6 shadow-md sticky top-0 bg-white z-10">
+    <nav className="py-2 px-5 md:p-6 shadow-md sticky top-0 bg-white z-10">
       <div className="sm:px-6 container mx-auto flex justify-between items-center">
         <div className="flex items-center gap-12">
           <a
@@ -129,7 +129,7 @@ export default function Navbar() {
                       src={profile.imageUrl || "https://github.com/shadcn.png"}
                       alt="User avatar"
                     />
-                    <AvatarFallback>CN</AvatarFallback>
+                    <AvatarFallback>User</AvatarFallback>
                   </Avatar>
                 </Button>
               </DropdownMenuTrigger>
