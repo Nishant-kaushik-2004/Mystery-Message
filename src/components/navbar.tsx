@@ -72,9 +72,9 @@ export default function Navbar() {
   //   console.log("Base URL:", baseUrl);
   // }
 
-  useEffect(()=>{
+  useEffect(() => {
     setBaseUrl(`${window.location.protocol}//${window.location.host}`);
-  },[])
+  }, []);
 
   const homePageUrl = `${baseUrl}`;
 
@@ -128,6 +128,7 @@ export default function Navbar() {
                     <AvatarImage
                       src={profile.imageUrl || "https://github.com/shadcn.png"}
                       alt="User avatar"
+                      
                     />
                     <AvatarFallback>User</AvatarFallback>
                   </Avatar>
@@ -247,74 +248,3 @@ export default function Navbar() {
     </nav>
   );
 }
-
-// "use client";
-// import { Button } from "@/components/ui/button";
-// import Link from "next/link";
-// import { useSession, signOut } from "next-auth/react";
-// import { User } from "next-auth";
-// import { useState } from "react";
-
-// export default function Navbar() {
-//   const { data: session } = useSession();
-//   const user: User = session?.user as User;
-//   const [isOpen, setIsOpen] = useState(false);
-
-//   return (
-//     <nav className="p-4 md:p-6 shadow-md sticky top-0 bg-gray-100 z-10 transition-all duration-300 ease-in-out">
-//       <div className="container mx-auto flex flex-col md:flex-row justify-between items-center">
-//         <Link href="/" className="text-xl font-bold mb-4 md:mb-0 text-gray-800 hover:text-gray-900 transition-colors duration-300">
-//             Mystery Message
-//         </Link>
-//         <div className="flex items-center">
-//           <button
-//             className="md:hidden text-white focus:outline-none"
-//             onClick={() => setIsOpen(!isOpen)}
-//           >
-//             <svg
-//               className="w-6 h-6"
-//               fill="none"
-//               stroke="currentColor"
-//               viewBox="0 0 24 24"
-//               xmlns="http://www.w3.org/2000/svg"
-//             >
-//               <path
-//                 strokeLinecap="round"
-//                 strokeLinejoin="round"
-//                 strokeWidth="2"
-//                 d={isOpen ? "M6 18L18 6M6 6l12 12" : "M4 6h16M4 12h16m-7 6h7"}
-//               ></path>
-//             </svg>
-//           </button>
-//           <div
-//             className={`${
-//               isOpen ? "block" : "hidden"
-//             } md:flex md:items-center md:space-x-4`}
-//           >
-//             {session ? (
-//               <>
-//                 <span className="mr-4 text-gray-800">
-//                   Welcome, {user?.username || user?.email}
-//                 </span>
-//                 <button
-//                   className="w-full md:w-auto bg-red-500 text-white px-4 py-2 rounded hover:bg-red-600 transition-colors duration-300"
-//                   onClick={() => {
-//                     signOut();
-//                   }}
-//                 >
-//                   Logout
-//                 </button>
-//               </>
-//             ) : (
-//               <Link href="/sign-in">
-//                 <Button className="w-full md:w-auto bg-blue-500 text-white px-4 py-2 rounded hover:bg-blue-600 transition-colors duration-300">
-//                   Login
-//                 </Button>
-//               </Link>
-//             )}
-//           </div>
-//         </div>
-//       </div>
-//     </nav>
-//   );
-// }

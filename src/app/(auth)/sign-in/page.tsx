@@ -49,13 +49,11 @@ export default function SignIn() {
       redirect: false,
     });
 
-    console.log("result -> ", result);
-
     if (result?.error) {
       const errorMsg =
         result.error === "CredentialsSignin"
           ? "Invalid id or password, Please enter correct credentials"
-          : "Something went wrong";
+          : "Something went wrong, Please enable cookies to ensure site functions properly";
       toast({
         title: "Login failed",
         description: errorMsg,

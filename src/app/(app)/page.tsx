@@ -55,7 +55,7 @@ const HomePage = () => {
             className="sm:w-full sm:max-w-lg max-w-72 text-black"
             onMouseEnter={plugin.current.stop}
             onMouseLeave={() => plugin.current.play()}
-            opts={{loop: true }}
+            opts={{ loop: true }}
           >
             <CarouselContent>
               {messages.map((msg, index) => (
@@ -65,12 +65,12 @@ const HomePage = () => {
               ))}
             </CarouselContent>
             <motion.div
-            initial={{ opacity: 0 }}
-            animate={{ opacity: 1 }}
-            transition={{ duration: 1, delay: 0.5 }}
+              initial={{ opacity: 0 }}
+              animate={{ opacity: 1 }}
+              transition={{ duration: 1, delay: 0.5 }}
             >
-            <CarouselPrevious className="opacity-70 hover:opacity-90 transition-all" />
-            <CarouselNext className="opacity-70 hover:opacity-90 transition-all"/>
+              <CarouselPrevious className="opacity-70 hover:opacity-90 transition-all" />
+              <CarouselNext className="opacity-70 hover:opacity-90 transition-all" />
             </motion.div>
           </Carousel>
         </div>

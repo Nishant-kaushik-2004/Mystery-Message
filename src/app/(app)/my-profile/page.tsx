@@ -284,7 +284,7 @@ const ProfilePage = () => {
                       onClick={() => setIsModalOpen(false)}
                     >
                       <div
-                        className="relative mt-44 "
+                        className="relative mt-32 mb-96 md:mt-40"
                         onClick={(e) => e.stopPropagation()}
                       >
                         {/* Close Button */}

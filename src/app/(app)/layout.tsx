@@ -4,6 +4,7 @@ import React from "react";
 import { Provider } from "react-redux";
 import { store } from "../redux/store";
 import Footer from "@/components/footer";
+import CookieCheck from "@/components/CookieCheck";
 
 export default function layout({ children }: { children: React.ReactNode }) {
   return (
@@ -12,6 +13,7 @@ export default function layout({ children }: { children: React.ReactNode }) {
         <Navbar />
         {children}
         <Footer />
+        <CookieCheck />
       </Provider>
     </>
   );

@@ -1,4 +1,5 @@
-import { cookies } from "next/headers";
+import { getToken } from "next-auth/jwt";
+// import { cookies } from "next/headers";
 import { NextRequest, NextResponse } from "next/server";
 
 // export { auth as middleware } from "./auth";
@@ -14,7 +15,11 @@ export async function middleware(req: NextRequest) {
     return NextResponse.next();
   }
 
-  const isLoggedIn = !!(await cookies()).get("__Secure-authjs.session-token"); //generally authorization is performed in authorized callback in auth.ts and here only the above commented part is executed but that is not working so i have to do it here.
+  // const isLoggedIn = (await cookies()).get("authjs.session-token")
+  //   ?.value; //generally authorization is performed in authorized callback in auth.ts and here only the above commented part is executed but that is not working so i have to do it here.
+  const token = await getToken({ req, secret: process.env.NEXTAUTH_SECRET });
+
+  const isLoggedIn = !!token;
 
   const isOnDashboard = nextUrl.pathname.startsWith("/dashboard");
 
