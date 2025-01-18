@@ -254,9 +254,11 @@ const ProfilePage = () => {
   return (
     <div className="min-h-screen bg-gradient-to-br from-blue-50 to-purple-50">
       <div className="max-w-3xl mx-auto p-4">
-        <div className="grid  sm:gap-6 gap-4">
-          <div className="bg-white p-4 w-full mx-auto flex justify-center items-center rounded-md">
-            <span className="text-xl font-bold text-blue-600">My Profile</span>
+        <div className="grid  sm:gap-6 gap-2">
+          <div className="bg-white p-4  sm:pt-0 -pt-2 w-full mx-auto flex justify-center items-center rounded-md">
+            <span className="text-xl font-bold text-blue-600">
+              My Profile
+            </span>
           </div>
           <Card className="overflow-hidden hover:shadow-lg transition-shadow duration-300">
             <CardContent className="p-6">

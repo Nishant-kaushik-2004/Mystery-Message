@@ -55,24 +55,24 @@ export const { handlers, signIn, signOut, auth } = NextAuth({
     }),
   ],
   callbacks: {
-    authorized({ request }) {
-      // Currently not in use as i am not using nextAuth middleware.
-      return Response.redirect(new URL("/sign-in", request.nextUrl));
-      // if (request.method === "POST") {
-      //   const isLoggedIn = !!auth?.user;
-      //   const isOnDashboard = request.nextUrl.pathname.startsWith("/dashboard");
-      //   if (isLoggedIn) {
-      //     if (isOnDashboard) {
-      //       return true;
-      //     }
-      //     return Response.redirect(new URL("/dashboard",request.nextUrl)); // Redirect authenticated users to dashboard
-      //   } else if (isOnDashboard) {
-      //     return false; // Redirect unauthenticated users to sign in page
-      //   }
-      //   return true;
-      // }
-      // return !!auth?.user;
-    },
+    // authorized({ request }) {
+    //   // Currently not in use as i am not using nextAuth middleware.
+    //   return Response.redirect(new URL("/sign-in", request.nextUrl));
+    //   // if (request.method === "POST") {
+    //   //   const isLoggedIn = !!auth?.user;
+    //   //   const isOnDashboard = request.nextUrl.pathname.startsWith("/dashboard");
+    //   //   if (isLoggedIn) {
+    //   //     if (isOnDashboard) {
+    //   //       return true;
+    //   //     }
+    //   //     return Response.redirect(new URL("/dashboard",request.nextUrl)); // Redirect authenticated users to dashboard
+    //   //   } else if (isOnDashboard) {
+    //   //     return false; // Redirect unauthenticated users to sign in page
+    //   //   }
+    //   //   return true;
+    //   // }
+    //   // return !!auth?.user;
+    // },
     async jwt({ token, user }) {
       if (user) {
         token._id = user._id?.toString();

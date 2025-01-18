@@ -65,7 +65,9 @@ export default function SignIn() {
         title: "Logged in successfully",
       });
 
-      router.push("/dashboard");
+      setTimeout(() => {
+        router.push("/dashboard");
+      }, 1000);
     }
     setIsSubmitting(false);
   };
@@ -110,9 +112,7 @@ export default function SignIn() {
                     </FormControl>
                     {usernameMsg && (
                       <p
-                        className={
-                          "flex text-sm text-red-500 text-start gap-1"
-                        }
+                        className={"flex text-sm text-red-500 text-start gap-1"}
                       >
                         <span className="text-lg mt-[2px]">
                           <FiAlertCircle />
