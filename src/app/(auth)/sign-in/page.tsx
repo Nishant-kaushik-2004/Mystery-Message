@@ -67,7 +67,7 @@ export default function SignIn() {
 
       setTimeout(() => {
         router.push("/dashboard");
-      }, 1000);
+      }, 1500);
     }
     setIsSubmitting(false);
   };
