@@ -17,13 +17,13 @@ import { Input } from "@/components/ui/input";
 import { Button } from "@/components/ui/button";
 import { Loader2 } from "lucide-react";
 import { signInSchema } from "@/schemas/signInSchema";
-import { useEffect, useState } from "react";
+import { Suspense, useEffect, useState } from "react";
 import { signIn } from "next-auth/react";
 import { useSearchParams } from "next/navigation";
 import { FiAlertCircle } from "react-icons/fi";
 import { FaArrowRightLong } from "react-icons/fa6";
 
-export default function SignIn() {
+const SignInComponent = () => {
   const [usernameMsg, setUsernameMsg] = useState("");
   const [isSubmitting, setIsSubmitting] = useState(false);
 
@@ -71,7 +71,7 @@ export default function SignIn() {
           variant: "destructive",
         });
         setUsernameMsg(errorMsg);
-      }, 300);
+      }, 200);
     }
   }, [searchParams]);
 
@@ -182,4 +182,13 @@ export default function SignIn() {
       </div>
     </div>
   );
-}
+};
+
+// Wrap SignInComponent in Suspense
+const SignIn = () => (
+  <Suspense fallback={<div className="md:text-3xl mx-auto mt-32">Loading...</div>}>
+    <SignInComponent />
+  </Suspense>
+);
+
+export default SignIn;
