@@ -67,7 +67,9 @@ export default function SignIn() {
       // Verify session on the server
       const session = await getSession();
       console.log("session -> ", session);
-      router.push("/dashboard");
+      setTimeout(() => {
+        router.push("/dashboard");
+      }, 5000);
       console.log("router push executed");
     }
     setIsSubmitting(false);
