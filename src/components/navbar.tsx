@@ -31,6 +31,8 @@ import facebook_logo from "@/assets/facebook logo.png";
 import twitter_logo from "@/assets/twitter logo.png";
 import Image from "next/image";
 import { usePathname } from "next/navigation";
+import { LayoutDashboard, UserPenIcon } from "lucide-react";
+import { FcInvite } from "react-icons/fc";
 
 export default function Navbar() {
   const { data: session } = useSession();
@@ -128,7 +130,6 @@ export default function Navbar() {
                     <AvatarImage
                       src={profile.imageUrl || "https://github.com/shadcn.png"}
                       alt="User avatar"
-                      
                     />
                     <AvatarFallback>User</AvatarFallback>
                   </Avatar>
@@ -143,20 +144,49 @@ export default function Navbar() {
                 </DropdownMenuLabel>
                 <DropdownMenuSeparator />
                 <DropdownMenuGroup>
-                  <DropdownMenuItem>
+                  <DropdownMenuItem
+                    className={`${currentPagePathname === "/" && "hidden"}`}
+                  >
+                    {currentPagePathname === "/dashboard" ? (
+                      <Link
+                        className="font-medium w-full flex gap-2 items-center"
+                        href={"/my-profile"}
+                      >
+                        {" "}
+                        <UserPenIcon className="text-blue-500" /> Profile
+                      </Link>
+                    ) : (
+                      <Link
+                        className="font-medium w-full flex gap-2 items-center"
+                        href={"/dashboard"}
+                      >
+                        {" "}
+                        <LayoutDashboard className="text-blue-500" /> Dashboard
+                      </Link>
+                    )}
+                    <DropdownMenuShortcut>⇧⌘P</DropdownMenuShortcut>
+                  </DropdownMenuItem>
+                  <DropdownMenuItem
+                    className={`${currentPagePathname !== "/" && "hidden"}`}
+                  >
                     <Link
-                      className="font-medium w-full"
-                      href={`${
-                        currentPagePathname === "/dashboard"
-                          ? "/my-profile"
-                          : "/dashboard"
-                      }`}
+                      className="font-medium w-full flex gap-2 items-center"
+                      href={"/dashboard"}
                     >
-                      {`${
-                        currentPagePathname === "/dashboard"
-                          ? "Profile"
-                          : "Dashboard"
-                      }`}
+                      {" "}
+                      <LayoutDashboard className="text-blue-500" /> Dashboard
+                    </Link>
+                    <DropdownMenuShortcut>⇧⌘D</DropdownMenuShortcut>
+                  </DropdownMenuItem>
+                  <DropdownMenuItem
+                    className={`${currentPagePathname !== "/" && "hidden"}`}
+                  >
+                    <Link
+                      className="font-medium w-full flex gap-2 items-center"
+                      href={"/my-profile"}
+                    >
+                      {" "}
+                      <UserPenIcon className="text-blue-500" /> Profile
                     </Link>
                     <DropdownMenuShortcut>⇧⌘P</DropdownMenuShortcut>
                   </DropdownMenuItem>
@@ -165,7 +195,7 @@ export default function Navbar() {
                 <DropdownMenuGroup>
                   <DropdownMenuSub>
                     <DropdownMenuSubTrigger>
-                      <span className="font-medium">Invite users</span>
+                      <span className="font-medium flex items-center gap-2"><FcInvite />Invite users</span>
                     </DropdownMenuSubTrigger>
                     <DropdownMenuPortal>
                       <DropdownMenuSubContent className="sm:static absolute -left-28 top-10">
