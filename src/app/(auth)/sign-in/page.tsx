@@ -65,9 +65,8 @@ export default function SignIn() {
         title: "Logged in successfully",
       });
 
-      setTimeout(() => {
-        router.push("/dashboard");
-      }, 1500);
+      router.push("/dashboard");
+      console.log("router push executed");
     }
     setIsSubmitting(false);
   };
