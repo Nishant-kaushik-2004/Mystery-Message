@@ -22,6 +22,7 @@ import { signIn } from "next-auth/react";
 import { useRouter } from "next/navigation";
 import { FiAlertCircle } from "react-icons/fi";
 import { FaArrowRightLong } from "react-icons/fa6";
+import { cookies } from "next/headers";
 
 export default function SignIn() {
   const [usernameMsg, setUsernameMsg] = useState("");
@@ -64,7 +65,9 @@ export default function SignIn() {
       toast({
         title: "Logged in successfully",
       });
-
+      console.log(
+        "cookie value -> ",(await cookies()).get("__Secure-authjs.session-token")?.value
+      );
       router.push("/dashboard");
       console.log("router push executed");
     }
