@@ -23,8 +23,6 @@ export async function middleware(req: NextRequest) {
   // const isLoggedIn = !!token;
 
   const isOnDashboard = nextUrl.pathname.startsWith("/dashboard");
-  console.log(isLoggedIn, " boolean -> ", !!isLoggedIn);
-  console.log("isOnDashboard -> ", isOnDashboard);
 
   if (isLoggedIn) {
     if (isOnDashboard || isOnMyProfilePage) {

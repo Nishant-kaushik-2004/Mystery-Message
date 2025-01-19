@@ -18,8 +18,8 @@ import { Button } from "@/components/ui/button";
 import { Loader2 } from "lucide-react";
 import { signInSchema } from "@/schemas/signInSchema";
 import { useEffect, useState } from "react";
-import { getSession, signIn } from "next-auth/react";
-import { useRouter } from "next/navigation";
+import { signIn } from "next-auth/react";
+import { useSearchParams } from "next/navigation";
 import { FiAlertCircle } from "react-icons/fi";
 import { FaArrowRightLong } from "react-icons/fa6";
 
@@ -28,8 +28,6 @@ export default function SignIn() {
   const [isSubmitting, setIsSubmitting] = useState(false);
 
   const { toast } = useToast();
-
-  const router = useRouter();
 
   //zod implementation
   const form = useForm<z.infer<typeof signInSchema>>({
@@ -46,34 +44,36 @@ export default function SignIn() {
     const result = await signIn("credentials", {
       identifier: data.identifier,
       password: data.password,
-      redirect: false,
     });
 
-    if (result?.error) {
-      const errorMsg =
-        result.error === "CredentialsSignin"
-          ? "Invalid id or password, Please enter correct credentials"
-          : "Something went wrong, Please enable cookies to ensure site functions properly";
-      toast({
-        title: "Login failed",
-        description: errorMsg,
-        variant: "destructive",
-      });
-      setUsernameMsg(errorMsg);
-    } else {
+    if (result?.ok) {
       toast({
         title: "Logged in successfully",
       });
-      // Verify session on the server
-      const session = await getSession();
-      console.log("session -> ", session);
-      setTimeout(() => {
-        router.push("/dashboard");
-      }, 5000);
-      console.log("router push executed");
     }
     setIsSubmitting(false);
   };
+
+  const searchParams = useSearchParams();
+
+  useEffect(() => {
+    const errorType = searchParams.get("error");
+
+    if (errorType) {
+      setTimeout(() => {
+        const errorMsg =
+          errorType === "CredentialsSignin"
+            ? "Invalid id or password, Please enter correct credentials"
+            : "Something went wrong, Please enable cookies to ensure site functions properly";
+        toast({
+          title: "Login failed",
+          description: errorMsg,
+          variant: "destructive",
+        });
+        setUsernameMsg(errorMsg);
+      }, 300);
+    }
+  }, [searchParams]);
 
   const identifierValue = form.watch("identifier");
   const passwordValue = form.watch("password");

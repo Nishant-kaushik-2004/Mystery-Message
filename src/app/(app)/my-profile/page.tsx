@@ -65,7 +65,6 @@ const ProfilePage = () => {
   // eslint-disable-next-line @typescript-eslint/no-explicit-any
   const handleImageUpload = async (result: any) => {
     setIsSubmitting(true);
-    console.log(result);
     if (result.event != "success") {
       toast({
         title: "Error uplaoding your avatar",
@@ -122,7 +121,6 @@ const ProfilePage = () => {
   const handleProfileUpdate = async (
     data: z.infer<typeof editProfileSchema>
   ) => {
-    console.log(data);
     try {
       setIsSubmitting(true);
 
@@ -154,7 +152,6 @@ const ProfilePage = () => {
   const handleSecurityUpdate = async (
     data: z.infer<typeof changePasswordSchema>
   ) => {
-    console.log(data);
     try {
       setIsSubmitting(true);
 
