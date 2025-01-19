@@ -18,11 +18,10 @@ import { Button } from "@/components/ui/button";
 import { Loader2 } from "lucide-react";
 import { signInSchema } from "@/schemas/signInSchema";
 import { useEffect, useState } from "react";
-import { signIn } from "next-auth/react";
+import { getSession, signIn } from "next-auth/react";
 import { useRouter } from "next/navigation";
 import { FiAlertCircle } from "react-icons/fi";
 import { FaArrowRightLong } from "react-icons/fa6";
-import { cookies } from "next/headers";
 
 export default function SignIn() {
   const [usernameMsg, setUsernameMsg] = useState("");
@@ -65,9 +64,9 @@ export default function SignIn() {
       toast({
         title: "Logged in successfully",
       });
-      console.log(
-        "cookie value -> ",(await cookies()).get("__Secure-authjs.session-token")?.value
-      );
+      // Verify session on the server
+      const session = await getSession();
+      console.log("session -> ", session);
       router.push("/dashboard");
       console.log("router push executed");
     }
