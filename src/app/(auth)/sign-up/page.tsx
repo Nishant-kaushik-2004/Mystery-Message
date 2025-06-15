@@ -24,7 +24,7 @@ import { useRouter } from "next/navigation";
 import React from "react";
 
 export default function SignUp() {
-  const [usernameMsg, setUsernameMsg] = useState("");
+  const [usernameMsg, setUsernameMsg] = useState<string | null>(null);
   const [isCheckingUsernameUnique, setIsCheckingUsernameUnique] =
     useState(false);
   const [isSubmitting, setIsSubmitting] = useState(false);
@@ -46,18 +46,18 @@ export default function SignUp() {
   const debouncedUsername = useDebounce(form.watch("username"), 500);
 
   useEffect(() => {
-    if(debouncedUsername.length < 3){
+    if (debouncedUsername.length < 3) {
       return;
     }
     const checkUsernameUnique = async () => {
       setIsCheckingUsernameUnique(true);
-      setUsernameMsg("");
+      setUsernameMsg(null);
       try {
         const response = await axios.get(
           `/api/check-username-unique?username=${debouncedUsername}`
         );
         setUsernameMsg(response.data.message);
-        console.log(response.data.message);
+        // console.log(response.data.message);
       } catch (error) {
         const axiosError = error as AxiosError<ApiResponseType>;
         setUsernameMsg(
@@ -71,7 +71,6 @@ export default function SignUp() {
     if (debouncedUsername) {
       checkUsernameUnique();
     }
-
   }, [debouncedUsername]);
 
   const OnSubmit = async (data: z.infer<typeof signUpSchema>) => {
@@ -80,10 +79,12 @@ export default function SignUp() {
       const response = await axios.post("/api/sign-up", data);
       console.log(response);
 
-      toast({ title: "Account created successfully", description: response.data.message });
-      
-      router.replace(`/sign-in`);
+      toast({
+        title: "Signup successfull",
+        description: response.data.message,
+      });
 
+      router.replace(`/sign-in`);
     } catch (error) {
       console.log("Error in signup of user", error);
 
@@ -105,33 +106,54 @@ export default function SignUp() {
     }
   };
 
-  useEffect(()=>{
-    setUsernameMsg("")
-  },[debouncedUsername])
+  useEffect(() => {
+    setUsernameMsg("");
+  }, [debouncedUsername]);
 
   return (
     <div className="flex justify-center items-center min-h-screen bg-gray-100">
       <div className="w-full max-w-md sm:p-8 p-6 space-y-8 bg-white rounded-lg shadow-md mx-3 sm:mx-0">
         <div className="text-center">
-          <h1 className="text-3xl sm:text-4xl font-extrabold lg-text-5xl mb-4  sm:mb-8">Join Mystery Message</h1>
-          <p className="mb-4 sm:mb-8">Sign up to start your anonymous adventure</p>
+          <h1 className="text-3xl sm:text-4xl font-extrabold lg-text-5xl mb-4  sm:mb-8">
+            Join Mystery Message
+          </h1>
+          <p className="mb-4 sm:mb-8">
+            Sign up to start your anonymous adventure
+          </p>
           <Form {...form}>
-            <form onSubmit={form.handleSubmit(OnSubmit)} className="space-y-3 sm:space-y-6">
+            <form
+              onSubmit={form.handleSubmit(OnSubmit)}
+              className="space-y-3 sm:space-y-6"
+            >
               <FormField
                 name="username"
                 control={form.control}
                 render={({ field }) => (
                   <FormItem>
-                    <FormLabel className="text-left block text-md opacity-70 ">Username</FormLabel>
+                    <FormLabel className="text-left block text-md opacity-70 ">
+                      Username
+                    </FormLabel>
                     <div className="flex relative">
-                    <FormControl>
-                      <Input placeholder="Enter a username" {...field} />
-                    </FormControl>
-                    {isCheckingUsernameUnique && (
-                      <Loader2 className="animate-spin absolute ml-[300px] sm:ml-80 mt-2" />
-                    )}
+                      <FormControl>
+                        <Input
+                          autoComplete="name"
+                          placeholder="Enter a username"
+                          {...field}
+                        />
+                      </FormControl>
+                      {isCheckingUsernameUnique && (
+                        <Loader2 className="animate-spin absolute ml-[300px] sm:ml-80 mt-2" />
+                      )}
                     </div>
-                    <p className={`text-left ml-2 text-sm ${usernameMsg==="Username  available"?"text-green-500":"text-red-500"}`}>{usernameMsg}</p>
+                    <p
+                      className={`text-left ml-2 text-sm ${
+                        usernameMsg === "Username  available"
+                          ? "text-green-500"
+                          : "text-red-500"
+                      }`}
+                    >
+                      {usernameMsg}
+                    </p>
                     <FormMessage />
                   </FormItem>
                 )}
@@ -141,9 +163,16 @@ export default function SignUp() {
                 control={form.control}
                 render={({ field }) => (
                   <FormItem>
-                    <FormLabel className="text-left block text-md opacity-70">Email</FormLabel>
+                    <FormLabel className="text-left block text-md opacity-70">
+                      Email
+                    </FormLabel>
                     <FormControl>
-                      <Input type="email" placeholder="Enter your Email" {...field} />
+                      <Input
+                        type="email"
+                        autoComplete="email"
+                        placeholder="Enter your Email"
+                        {...field}
+                      />
                     </FormControl>
                     <FormMessage />
                   </FormItem>
@@ -154,11 +183,14 @@ export default function SignUp() {
                 control={form.control}
                 render={({ field }) => (
                   <FormItem>
-                    <FormLabel className="text-left block text-md opacity-70">Password</FormLabel>
+                    <FormLabel className="text-left block text-md opacity-70">
+                      Password
+                    </FormLabel>
                     <FormControl>
                       <Input
                         type="password"
-                        placeholder="Set a strong Password"
+                        autoComplete="current-password"
+                        placeholder="Set your account password"
                         {...field}
                       />
                     </FormControl>
@@ -166,7 +198,11 @@ export default function SignUp() {
                   </FormItem>
                 )}
               />
-              <Button type="submit" disabled={isSubmitting} className="sm:text-lg hover:shadow-sm">
+              <Button
+                type="submit"
+                disabled={isSubmitting}
+                className="sm:text-lg hover:shadow-sm"
+              >
                 {isSubmitting ? (
                   <>
                     <Loader2 className="mr-2 animate-spin" /> Please wait

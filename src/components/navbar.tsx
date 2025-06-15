@@ -205,13 +205,13 @@ export default function Navbar() {
                             href={`https://wa.me/?text=${text} ${url}`}
                             target="_blank"
                             rel="noopener noreferrer"
-                            className="mx-auto"
+                            className="mx-auto -mb-2"
                           >
                             <Image
                               alt="whatsapp logo"
                               src={whatsapp_logo}
-                              height={30}
-                              width={30}
+                              height={60}
+                              width={60}
                             />
                           </a>
                         </DropdownMenuItem>

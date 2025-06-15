@@ -18,13 +18,15 @@ import { Button } from "@/components/ui/button";
 import { Loader2 } from "lucide-react";
 import { signInSchema } from "@/schemas/signInSchema";
 import { Suspense, useEffect, useState } from "react";
-import { signIn } from "next-auth/react";
+import { getSession, signIn } from "next-auth/react";
 import { useSearchParams } from "next/navigation";
 import { FiAlertCircle } from "react-icons/fi";
 import { FaArrowRightLong } from "react-icons/fa6";
 
 const SignInComponent = () => {
-  const [usernameMsg, setUsernameMsg] = useState("");
+  const searchParams = useSearchParams();
+  const callbackUrl = searchParams.get("callbackUrl") || "/dashboard";
+  const [usernameMsg, setUsernameMsg] = useState<string | null>(null);
   const [isSubmitting, setIsSubmitting] = useState(false);
 
   const { toast } = useToast();
@@ -40,40 +42,68 @@ const SignInComponent = () => {
 
   const OnSubmit = async (data: z.infer<typeof signInSchema>) => {
     setIsSubmitting(true);
+    setUsernameMsg(null);
 
-    const result = await signIn("credentials", {
-      identifier: data.identifier,
-      password: data.password,
-    });
+    try {
+      const result = await signIn("credentials", {
+        identifier: data.identifier,
+        password: data.password,
+        redirect: false,
+        redirectTo: callbackUrl,
+      });
 
-    if (result?.ok) {
+      if (result?.error) {
+        setUsernameMsg("Invalid email or password");
+        setIsSubmitting(false);
+        return;
+      }
+
+      // Optional: wait for session to ensure user is authenticated
+      const session = await getSession();
+      if (!session) {
+        toast({
+          title: "Login succeeded, but session is not available.",
+        });
+        setIsSubmitting(false);
+        return;
+      }
+
       toast({
         title: "Logged in successfully",
       });
+
+      // ✅ Final Redirect - Clean URL, works with middleware
+      window.location.href = callbackUrl;
+
+    } catch (err) {
+      console.error("Login error:", err);
+      toast({
+        title: "Something went wrong. Please try again.",
+        variant: "destructive",
+      });
+    } finally {
+      setIsSubmitting(false);
     }
-    setIsSubmitting(false);
   };
 
-  const searchParams = useSearchParams();
+  // useEffect(() => {
+  //   const errorType = searchParams.get("error");
 
-  useEffect(() => {
-    const errorType = searchParams.get("error");
-
-    if (errorType) {
-      setTimeout(() => {
-        const errorMsg =
-          errorType === "CredentialsSignin"
-            ? "Invalid id or password, Please enter correct credentials"
-            : "Something went wrong, Please enable cookies to ensure site functions properly";
-        toast({
-          title: "Login failed",
-          description: errorMsg,
-          variant: "destructive",
-        });
-        setUsernameMsg(errorMsg);
-      }, 200);
-    }
-  }, [searchParams]);
+  //   if (errorType) {
+  //     setTimeout(() => {
+  //       const errorMsg =
+  //         errorType === "CredentialsSignin"
+  //           ? "Invalid id or password, Please enter correct credentials"
+  //           : "Something went wrong, Please enable cookies to ensure site functions properly";
+  //       toast({
+  //         title: "Login failed",
+  //         description: errorMsg,
+  //         variant: "destructive",
+  //       });
+  //       setUsernameMsg(errorMsg);
+  //     }, 200);
+  //   }
+  // }, [searchParams]);
 
   const identifierValue = form.watch("identifier");
   const passwordValue = form.watch("password");
@@ -109,6 +139,7 @@ const SignInComponent = () => {
                       <Input
                         required
                         type="text"
+                        autoComplete="email"
                         placeholder="Enter your email or username"
                         {...field}
                       />
@@ -138,6 +169,7 @@ const SignInComponent = () => {
                     <FormControl>
                       <Input
                         required
+                        autoComplete="current-password"
                         type="password"
                         placeholder="Enter your Password"
                         {...field}
@@ -186,7 +218,9 @@ const SignInComponent = () => {
 
 // Wrap SignInComponent in Suspense
 const SignIn = () => (
-  <Suspense fallback={<div className="md:text-3xl mx-auto mt-32">Loading...</div>}>
+  <Suspense
+    fallback={<div className="md:text-3xl mx-auto mt-32">Loading...</div>}
+  >
     <SignInComponent />
   </Suspense>
 );
